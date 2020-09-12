@@ -21,18 +21,23 @@ public class DataInitializer {
 
     @EventListener(ApplicationReadyEvent.class)
     public void insertInitialData() {
-        Flux.just(
-                "Arsenal", "Aston Villa", "Brighton & Hove Albion", "Burnley", "Chelsea", "Crystal Palace", "Everton",
-                "Fulham", "Leeds United", "Leicester City", "Liverpool", "Manchester City", "Manchester United",
-                "Newcastle United", "Sheffield United", "Southampton", "Tottenham Hotspur", "West Bromwich Albion",
-                "West Ham United", "Wolverhampton Wanderers"
-            ).map(Club::new)
-            .flatMap(clubRepo::save)
-            .thenMany(clubRepo.findAll())
-            .subscribe(System.out::println);
+        clubRepo.deleteAll()
+                .thenMany(
+                        Flux.just(
+                                "Arsenal", "Aston Villa", "Brighton & Hove Albion", "Burnley", "Chelsea", "Crystal Palace", "Everton",
+                                "Fulham", "Leeds United", "Leicester City", "Liverpool", "Manchester City", "Manchester United",
+                                "Newcastle United", "Sheffield United", "Southampton", "Tottenham Hotspur", "West Bromwich Albion",
+                                "West Ham United", "Wolverhampton Wanderers"
+                        )
+                )
+                .map(Club::new)
+                .flatMap(clubRepo::save)
+                .thenMany(clubRepo.findAll())
+                .subscribe(System.out::println);
 
         Mono.just("FC Barcelona")
                 .map(Club::new)
-                .subscribe(clubRepo::save);
+                .flatMap(clubRepo::save)
+                .subscribe();
     }
 }
