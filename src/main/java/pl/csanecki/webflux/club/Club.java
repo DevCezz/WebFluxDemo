@@ -21,4 +21,12 @@ public class Club {
     public String getName() {
         return name;
     }
+
+    @Override
+    public String toString() {
+        return "Club{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
