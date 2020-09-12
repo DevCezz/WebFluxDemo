@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
+import java.time.Duration;
+
 @RestController
 public class ClubApi {
 
@@ -18,6 +20,7 @@ public class ClubApi {
 
     @GetMapping(produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
     public Flux<Club> getAllClubs() {
-        return clubRepo.findAll();
+        return clubRepo.findAll()
+                .delayElements(Duration.ofMillis(500));
     }
 }
